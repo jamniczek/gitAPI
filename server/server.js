@@ -1,0 +1,36 @@
+const express = require('express');
+const axios = require('axios');
+const geoip = require('geoip-lite');
+const logic = require('./utils/logic');
+
+const app = express();
+
+const PORT = process.env.PORT || 3000;
+
+app.get('/repositories/:owner/:repo', (req, res) => {
+
+    let ip = req.connection.remoteAddress;
+    let geo = geoip.lookup(ip);
+
+    console.log("country: ", geo);
+
+    let owner = req.params.owner;
+    let repo = req.params.repo;
+
+    axios.get(`https://api.github.com/repos/${owner}/${repo}`)
+        .then((response) => {
+            res.send(JSON.stringify(logic.formResponse(response)));
+        }).catch((error) => {
+            if (error.response.status === 404) {
+                console.log(error.response.status);
+                res.status(404).send("Nothing found");
+            } else {
+                res.send("OMG dunno that error");
+            };
+        });
+    // res.send(res);
+});
+
+app.listen(PORT, () => {
+    console.log(`up and running on ${PORT}`);
+});
