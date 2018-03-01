@@ -1,18 +1,41 @@
-function formResponse(response) {
-    // let repoName = response.data.full_name;
-    // let repoDescr = response.data.description;
-    // let repoCloneURL = response.data.clone_url;
-    // let repoStarz = response.data.stargazers_count;
-    // let repoCreationDate = response.data.created_at;
+const geoip = require('geoip-lite');
+
+function FormResponse(request, response) {
 
     let formattedResponse = {
         fullName: response.data.full_name,
         description: response.data.description,
         cloneUrl: response.data.clone_url,
         starz: response.data.stargazers_count,
-        createdAt: response.data.created_at
+        createdAt: response.data.created_at.substr(0, 10)
     };
-    return formattedResponse;
+
+    if (request.location !== 'US') {
+        return formattedResponse;
+    } else {
+        formattedResponse.createdAt = 'dupa';
+        return formattedResponse;
+    }
 };
 
-module.exports = {formResponse};
+// function FormatDate(response) {
+
+// };
+
+function FormUsDate(request, response) {
+
+    let dateSubstring = response.data.created_at.substr(0, 10);
+    let dateBlocks = dateSubstring.split('-');
+
+    console.log(dateBlocks);
+    return dateSubstring
+
+    // if(location === 'US') {
+
+    // }
+};
+
+module.exports = {
+    FormResponse,
+    FormUsDate
+};
