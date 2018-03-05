@@ -7,35 +7,28 @@ function FormResponse(request, response) {
         description: response.data.description,
         cloneUrl: response.data.clone_url,
         starz: response.data.stargazers_count,
-        createdAt: response.data.created_at.substr(0, 10)
+        createdAt: FormDate(request, response)
     };
 
-    if (request.location !== 'US') {
-        return formattedResponse;
-    } else {
-        formattedResponse.createdAt = 'dupa';
-        return formattedResponse;
-    }
+    return formattedResponse;
+
 };
 
-// function FormatDate(response) {
-
-// };
-
-function FormUsDate(request, response) {
+function FormDate(request, response) {
 
     let dateSubstring = response.data.created_at.substr(0, 10);
     let dateBlocks = dateSubstring.split('-');
 
     console.log(dateBlocks);
-    return dateSubstring
 
-    // if(location === 'US') {
-
-    // }
+    if(request.location === 'US') {
+        return dateBlocks[1] + '-' + dateBlocks[2] + '-' + dateBlocks[0];
+    } else {
+        return dateBlocks[2] + '-' + dateBlocks[1] + '-' + dateBlocks[0];
+    }
 };
 
 module.exports = {
     FormResponse,
-    FormUsDate
+    FormDate
 };
