@@ -8,8 +8,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use((req, res, next) => {
-    let ip = "109.173.219.206";
-    // let ip = req.connection.remoteAddress;
+    // let ip = "54.201.91.4";
+    let ip = req.connection.remoteAddress;
     req.location = geoip.lookup(ip).country;
     next();
 });
