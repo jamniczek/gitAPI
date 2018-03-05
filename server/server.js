@@ -11,6 +11,7 @@ app.use((req, res, next) => {
     // let ip = "54.201.91.4";
     let ip = req.connection.remoteAddress;
     req.location = geoip.lookup(ip).country;
+    consoel.log(ip);
     next();
 });
 
